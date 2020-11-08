@@ -82,7 +82,7 @@ app.get('/buy',function(req,res){
         installments: 6, 
         default_installments: 6
       },
-      notification_url: "http://localhost:"+port+"/",
+      notification_url: "https://desanlesr95-mp-commerce-nodejs.herokuapp.com/webhook",
       auto_return: "approved"
     };
 
