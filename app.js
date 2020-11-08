@@ -2,7 +2,7 @@ var express = require('express');
 var exphbs  = require('express-handlebars');
 const mercadopago = require ('mercadopago');
 const request = require('request');
-
+var port = process.env.PORT || 3000
 var app = express();
 
 app.engine('handlebars', exphbs());
@@ -25,7 +25,7 @@ app.get('/pedding_pay', function (req, res) {
 
 app.get('/success_pay', function (req, res) {
   console.log(req.query);
-    res.render('success',req.query);
+  res.render('success',req.query);
 });
 
 
@@ -52,11 +52,12 @@ app.get('/buy',function(req,res){
         }
       ],
       back_urls : {
-          success: "http://localhost:3000/success_pay",
-          failure : "http://localhost:3000/failed_pay",
-          pending: "http://localhost:3000/pedding_pay"
+          success: "http://localhost:"+port+"/success_pay",
+          failure : "http://localhost:"+port+"/failed_pay",
+          pending: "http://localhost:"+port+"/pedding_pay"
 
       },
+      external_reference: "lendev.sara@gmail.com", 
       payer: { 
         name: "Lalo",
         surname: "Landa",
@@ -71,7 +72,6 @@ app.get('/buy',function(req,res){
           street_number: 1602
         }
       },
-      auto_return: "approved",
       payment_methods: {
         excluded_payment_methods: [
           {
@@ -81,23 +81,15 @@ app.get('/buy',function(req,res){
         excluded_payment_types: [{ id: "atm" }],
         installments: 6, 
         default_installments: 6
-      }
-      //external_reference: "lendev.sara@gmail.com",
-      //notification_url: "https://localhost:3000/webhook"
+      },
+      notification_url: "http://localhost:"+port+"/",
+      auto_return: "approved"
     };
 
-    //console.log(preference);
+ 
 
     mercadopago.preferences.create(preference)
     .then(function(response){
-    // Este valor reemplazará el string "<%= global.id %>" en tu HTML
-      /*let global = {
-        id: ""
-      }
-      global.id = (response.body.id).toString();
-      console.log(global.id);*/
-      //let url_pay = response.body.init_point;
-      //console.log(response.body);
       res.redirect(response.body.init_point);
     }).catch(function(error){
       console.log(error);
@@ -106,8 +98,10 @@ app.get('/buy',function(req,res){
 });
 
 
-app.post('webhook',function(req,res){
-  console.log(res);
+app.post('/webhook',function(req,res){
+  console.log("Webhook");
+  console.log(req);
+  var body;
   req.on("data", chunk => {
     
     body += chunk.toString();
@@ -128,6 +122,6 @@ app.use(express.static('assets'));
 app.use('/assets', express.static(__dirname + '/assets'));
 
 
-var port = process.env.PORT || 3000
+
 app.listen(port);
 console.log('Servidor correindo ' + port)
