@@ -48,13 +48,13 @@ app.get('/buy',function(req,res){
           description: "Dispositivo móvil de Tienda e-commerce",
           unit_price: parseInt(req.query.price),
           quantity: parseInt(req.query.unit),
-          picture_url: "http://localhost:3000/"+req.query.img
+          picture_url: "https://desanlesr95-mp-commerce-nodejs.herokuapp.com/"+req.query.img
         }
       ],
       back_urls : {
-          success: "http://localhost:"+port+"/success_pay",
-          failure : "http://localhost:"+port+"/failed_pay",
-          pending: "http://localhost:"+port+"/pedding_pay"
+          success: "https://desanlesr95-mp-commerce-nodejs.herokuapp.com/success_pay",
+          failure : "https://desanlesr95-mp-commerce-nodejs.herokuapp.com/failed_pay",
+          pending: "https://desanlesr95-mp-commerce-nodejs.herokuapp.com/pedding_pay"
 
       },
       external_reference: "lendev.sara@gmail.com", 
@@ -99,7 +99,7 @@ app.get('/buy',function(req,res){
 
 
 app.post('/webhook',function(req,res){
-  console.log("Webhook");
+  console.log("Webhook-----");
   console.log(req);
   var body;
   req.on("data", chunk => {
