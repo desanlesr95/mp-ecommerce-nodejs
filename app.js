@@ -11,7 +11,7 @@ app.set('view engine', 'handlebars');
 
 mercadopago.configure({
   integrator_id: 'dev_24c65fb163bf11ea96500242ac130004',
-  access_token: 'APP_USR-8058997674329963-062418-89271e2424bb1955bc05b1d7dd0977a8-592190948'
+  access_token: 'APP_USR-1159009372558727-072921-8d0b9980c7494985a5abd19fbe921a3d-617633181'
 });
 
 app.get('/', function (req, res) {
@@ -79,8 +79,7 @@ app.get('/buy',function(req,res){
           }
         ],
         excluded_payment_types: [{ id: "atm" }],
-        installments: 6, 
-        default_installments: 6
+        installments: 6
       },
       notification_url: "https://desanlesr95-mp-commerce-nodejs.herokuapp.com/webhook",
       auto_return: "approved"
@@ -102,6 +101,7 @@ app.post('/webhook',function(req,res){
   console.log("Webhook-----");
   console.log(req);
   var body;
+  console.log(req.body);
   req.on("data", chunk => {
     
     body += chunk.toString();
@@ -125,3 +125,20 @@ app.use('/assets', express.static(__dirname + '/assets'));
 
 app.listen(port);
 console.log('Servidor correindo ' + port)
+
+
+/*
+
+  {
+    collection_status: 'approved',
+    payment_id: '12210339716',
+    status: 'approved',
+    external_reference: 'lendev.sara@gmail.com',
+    payment_type: 'credit_card',
+    merchant_order_id: '1960333859',
+    preference_id: '592190948-7543637e-8b43-41c6-846f-fb48572be8d8',
+    site_id: 'MLM',
+    processing_mode: 'aggregator',
+    merchant_account_id: 'null'
+  } 
+*/
