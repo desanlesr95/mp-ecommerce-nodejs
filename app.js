@@ -24,7 +24,7 @@ app.get('/pedding_pay', function (req, res) {
 
 
 app.get('/success_pay', function (req, res) {
-  console.log(req.query);
+  //console.log(req.query);
   res.render('success',req.query);
 });
 
@@ -81,7 +81,7 @@ app.get('/buy',function(req,res){
         excluded_payment_types: [{ id: "atm" }],
         installments: 6
       },
-      notification_url: "https://desanlesr95-mp-commerce-nodejs.herokuapp.com/webhook",
+      notification_url: "https://desanlesr95-mp-commerce-nodejs.herokuapp.com/webhook?source_news=webhooks",
       auto_return: "approved"
     };
 
@@ -99,13 +99,14 @@ app.get('/buy',function(req,res){
 
 app.post('/webhook',function(req,res){
   console.log("Webhook-----");
-  console.log(req);
+  //console.log(req);
   var body;
-  console.log(req.body);
+  //console.log(req.body);
   req.on("data", chunk => {
     
     body += chunk.toString();
-    console.log(body);  
+    console.log(body); 
+    //mercadopago.payments(); 
   });
   req.on("end", () => {  
     console.log(body, "webhook response"); 
